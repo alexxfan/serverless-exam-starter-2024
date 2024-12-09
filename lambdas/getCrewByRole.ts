@@ -12,7 +12,7 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
   try {
     console.log("Event: ", JSON.stringify(event));
     const parameters = event?.pathParameters;
-    const queryParams = event?.queryStringParameters;
+    const queryParams = event?.queryStringParameters; //get query parameters
 
     const movieId = parameters?.movieId
       ? parseInt(parameters.movieId)
@@ -54,14 +54,16 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
       };
     }
 
+    //get crew names
     let crewNames = queryCommandOutput.Items.flatMap((item) =>
         (item.names as string).split(",").map((name) => name.trim())
       );
   
+      //filter by name using query params
       if (queryParams?.name) {
-        const nameSubstring = queryParams.name.toLowerCase();
+        const nameSubstring = queryParams.name.toLowerCase(); //string you enter is lowercase
         crewNames = crewNames.filter((name) =>
-          name.toLowerCase().includes(nameSubstring)
+          name.toLowerCase().includes(nameSubstring) //crewNames are lowercase and checks if substring is in crewNames
         );
       }
 

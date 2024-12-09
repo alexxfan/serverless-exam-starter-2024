@@ -45,20 +45,21 @@ interface Car {
    },
   ];
 
-  function findMatch<T>( data : T[], criteria: (d: T) => boolean ) : T | undefined {
+  
+  function getMatches<T>( data : T[], criteria: (d: T) => boolean ) : T | undefined {
     return data.find((criteria))
 }
   
-  function getCarMatches(data: Car[], criteria: (t: Car) => boolean): Car[] {
-    return data.filter(criteria);
-  }
+//   function getCarMatches(data: Car[], criteria: (t: Car) => boolean): Car[] {
+//     return data.filter(criteria);
+//   }
   
-  function getBicycleMatches(
-    data: Bicycle[],
-    criteria: (t: Bicycle) => boolean
-  ): Bicycle[] {
-    return data.filter(criteria);
-  }
+//   function getBicycleMatches(
+//     data: Bicycle[],
+//     criteria: (t: Bicycle) => boolean
+//   ): Bicycle[] {
+//     return data.filter(criteria);
+//   }
 
-console.log(findMatch<Bicycle>(bicycleShed, (b) => b.color == "Blue"  ))
-console.log(findMatch<Car>(carpark, (b) => b.color == "Red"  ))
+console.log(getMatches<Bicycle>(bicycleShed, (b) => b.color == "Blue"  )) //get blue bicycles
+console.log(getMatches<Car>(carpark, (b) => b.color == "Red"  )) //get red cars
