@@ -12,6 +12,7 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
   try {
     console.log("Event: ", JSON.stringify(event));
     const parameters = event?.pathParameters;
+    const queryParams = event?.queryStringParameters;
 
     const movieId = parameters?.movieId
       ? parseInt(parameters.movieId)
@@ -53,9 +54,16 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
       };
     }
 
-    const crewNames = queryCommandOutput.Items.flatMap((item) =>
-      (item.names as string).split(",").map((name) => name.trim())
-    );
+    let crewNames = queryCommandOutput.Items.flatMap((item) =>
+        (item.names as string).split(",").map((name) => name.trim())
+      );
+  
+      if (queryParams?.name) {
+        const nameSubstring = queryParams.name.toLowerCase();
+        crewNames = crewNames.filter((name) =>
+          name.toLowerCase().includes(nameSubstring)
+        );
+      }
 
     return {
       statusCode: 200,
@@ -69,13 +77,13 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
       }),
     };
   } catch (error: any) {
-    console.error("Error: ", JSON.stringify(error));
+    console.error(JSON.stringify(error));
     return {
       statusCode: 500,
       headers: {
         "content-type": "application/json",
       },
-      body: JSON.stringify({ error: "Internal Server Error" }),
+      body: JSON.stringify({error}),
     };
   }
 };
